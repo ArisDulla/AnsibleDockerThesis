@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  backend:
+    build:
+      context: ./django/ClinicBackend
+    image: app:django
+    
+    command: sh -c "python manage.py makemigrations && 
+                    python manage.py migrate && 
+                    python manage.py collectstatic --noinput &&
+                    gunicorn passportBackend.wsgi:application  --bind 0.0.0.0:8000"
+    depends_on:
+      - db 
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - uploads_volume:/django/ClinicBackend/uploads  
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: passportdb
+      POSTGRES_USER: arisdulla
+      POSTGRES_PASSWORD: audio22tm
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  
+  frontend:
+    image: app:react
+    build:
+      context: ./react
+    volumes:
+      - react_build:/react/dist/frontpassport/browser
+    command: ["sh", "-c", "npm run build"]
+    
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
+      - react_build:/var/www/react
+    depends_on:
+      - frontend
+      
+volumes:
+  react_build:
+  db_data: 
+  uploads_volume:

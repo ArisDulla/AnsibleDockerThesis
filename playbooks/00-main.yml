@@ -1,0 +1,33 @@
+---
+- name: Main Playbook
+  hosts: all
+  become: true
+
+  tasks:
+
+    # - name: Include tasks from 01-docker.yml
+    #   import_tasks: 01-docker.yml
+    
+    # - name: Include tasks from 02-docker.yml
+    #   import_tasks: 02-docker.yml
+
+    
+    # - name: Include tasks from 03-docker.yml
+    #   import_tasks: 03-docker.yml
+    
+    #
+    # Built
+    #
+    # - name: Include tasks from 04-built-docker.yml
+    #   import_tasks: 04-built-docker.yml
+    
+    #
+    # Start
+    #
+    - name: Include tasks from 05-start-docker.yml
+      import_tasks: 05-start-docker.yml
+
+
+# ansible-playbook  playbooks/00-main.yml
+
+# ansible-playbook  playbooks/down-docker.yml

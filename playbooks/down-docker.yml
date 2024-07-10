@@ -1,0 +1,16 @@
+- name: Install Django and configure Apache
+  hosts: all
+  become: true
+
+  tasks:
+
+    - name: DOWN Docker Compose Services
+      ansible.builtin.command: 
+        cmd: sudo docker-compose down
+        chdir: /var/www/full-stack/
+
+    
+
+
+
+   

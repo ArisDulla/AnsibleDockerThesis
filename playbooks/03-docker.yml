@@ -1,0 +1,87 @@
+    - name: Clone Dental-Clinic-backend repository
+      git:
+        repo: git@github.com:ArisDulla/BackendThesis.git
+        dest: /var/www/full-stack/django/ClinicBackend
+        accept_hostkey: yes
+        key_file: /home/arisdulla/.ssh/id_ed25519
+
+    - name: Clone Thesis Front-End repository
+      git:
+        repo: git@github.com:ArisDulla/ThesisFrontEnd.git
+        dest: /var/www/full-stack/react
+        accept_hostkey: yes
+        key_file: /home/arisdulla/.ssh/id_ed25519
+    
+    - name: Create directory "nginx" in /var/www/full-stack
+      file:
+        path: /var/www/full-stack/nginx
+        state: directory
+        mode: 0755
+
+    - name: Copy "nginx-setup.conf" text file
+      copy:
+        src: /home/aris/Ansible-Docker-/files-nginx/nginx-setup.conf 
+        dest: /var/www/full-stack/nginx/
+        mode: 0644
+
+    - name: Copy secret_key.txt of Django
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-django/secret_key.txt 
+        dest: /var/www/full-stack/django/
+        mode: 0644    
+
+    - name: Copy Dockerfile of Django
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-django/Dockerfile 
+        dest: /var/www/full-stack/django/ClinicBackend/
+        mode: 0644     
+
+    - name: Copy requirements.txt of Django
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-django/requirements.txt 
+        dest: /var/www/full-stack/django/ClinicBackend/
+        mode: 0644         
+
+    - name: Copy env of Django
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-django/.env
+        dest: /var/www/full-stack/django/ClinicBackend/
+        mode: 0644     
+
+
+    - name: Copy Dockerfile of Angular
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-angular/Dockerfile
+        dest: /var/www/full-stack/react/
+        mode: 0644      
+
+    - name: Create directory "environments" in /var/www/full-stack/react/src
+      file:
+        path: /var/www/full-stack/react/src/environments
+        state: directory
+        mode: 0755
+
+    - name: Copy environment.ts of Angular
+      copy:
+        src:  /home/aris/Ansible-Docker-/files-angular/environment.ts
+        dest: /var/www/full-stack/react/src/environments
+        mode: 0644
+                   
+    - name: Run npm install
+      ansible.builtin.command:
+        cmd: npm install
+        chdir: /var/www/full-stack/react/
+
+    - name: Copy docker-compose.yml of Django
+      copy:
+        src:  /home/aris/Ansible-Docker-/docker/docker-compose.yml
+        dest: /var/www/full-stack/
+        mode: 0644   
+
+   
+
+    
+
+
+
+   

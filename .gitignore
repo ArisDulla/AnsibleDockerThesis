@@ -1,0 +1,4 @@
+.vscode
+files-django/.env
+files-django/secret_key.txt
+files-angular/environment.ts
